@@ -19,12 +19,26 @@ public class Day_1_ChronalCalibration {
 		System.out.println(frequency);
 	}
 	
-	private static void first_double_freq(Scanner sc) {
+	private static void first_double_freq(Scanner sc, ArrayList<Integer> freqMods) {
+		ArrayList<Integer> freqList = new ArrayList<Integer>();
 		int frequency = 0;
-		while (sc.hasNextLine()) {
-			int freqMod = Integer.parseInt(sc.nextLine());
-	        frequency += freqMod;
-	        }
+		freqList.add(frequency);
+		int j = 0;
+		while (j < 150) {
+			int i = 0;
+			while (i < freqMods.size()) {
+		        frequency += freqMods.get(i);
+		        for (Integer freq: freqList) {
+		        	if (freq == frequency) {
+		        		System.out.println("fuckyeah: " + frequency);
+		        	}
+		        }
+		        freqList.add(frequency);
+		        ++i;
+		        }
+			j++;
+		}
+		System.out.println(freqList.size());
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -35,6 +49,7 @@ public class Day_1_ChronalCalibration {
 		sc.useDelimiter("\\Z");
 		populate_list(sc, freqMods);
 		last_freq(sc, freqMods);
+		first_double_freq(sc, freqMods);
 	}
 	
 }
