@@ -40,6 +40,18 @@ public class Day_2_InventoryManagementSys {
 		return counter;
 	}
 	
+	private static String getMatchingChars(String str1, String str2) {
+		String matchingChars = "";
+		int iChar = 0;
+		while (iChar < str1.length()) {
+			if (str1.charAt(iChar) == str2.charAt(iChar)) {
+				matchingChars += str1.charAt(iChar);
+			}
+			++iChar;
+		}
+		return matchingChars;
+	}
+	
 	private static String correctIDchars(ArrayList<String> aList) {
 		String matchingChars = "";
 		boolean IDsAreFound = false;
@@ -56,13 +68,7 @@ public class Day_2_InventoryManagementSys {
 					++iChar;
 				}
 				if (diff == 1) {
-					iChar = 0;
-					while (iChar < examineID.length()) {
-						if (examineID.charAt(iChar) != currentID.charAt(iChar)) {
-							matchingChars = examineID.replace(String.valueOf(examineID.charAt(iChar)), "");
-						}
-						++iChar;
-					}
+					matchingChars = getMatchingChars(examineID, currentID); 
 					IDsAreFound = true;
 					break;
 				}
@@ -91,8 +97,7 @@ public class Day_2_InventoryManagementSys {
 		testList.add("wvxyz");
 		String testStr = "fgij";
 		System.out.println("Unit test 2: " + testStr.equals(correctIDchars(testList)));
-		
-		//System.out.println("The common letters between the two correct box IDs are:" + correctIDchars(IDlist));
+		System.out.println("The common letters between the two correct box IDs are: " + correctIDchars(IDlist));
 	}
 
 }
