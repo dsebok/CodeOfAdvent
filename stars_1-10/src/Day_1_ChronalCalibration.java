@@ -11,34 +11,37 @@ public class Day_1_ChronalCalibration {
 		}
 	}
 	
-	private static void last_freq(Scanner sc, ArrayList<Integer> freqMods) {
+	private static void last_freq(ArrayList<Integer> freqMods) {
 		int frequency = 0;
 		for (Integer freqMod: freqMods) {
 			frequency += freqMod;
 		}
-		System.out.println(frequency);
+		System.out.println("The last frequency is: " + frequency);
 	}
 	
-	private static void first_double_freq(Scanner sc, ArrayList<Integer> freqMods) {
+	private static void first_double_freq(ArrayList<Integer> freqMods) {
 		ArrayList<Integer> freqList = new ArrayList<Integer>();
 		int frequency = 0;
 		freqList.add(frequency);
 		int j = 0;
-		while (j < 150) {
+		while (j > -1) {
 			int i = 0;
 			while (i < freqMods.size()) {
 		        frequency += freqMods.get(i);
 		        for (Integer freq: freqList) {
 		        	if (freq == frequency) {
-		        		System.out.println("fuckyeah: " + frequency);
+		        		System.out.println("The first repeated frequency is: " + frequency);
+		        		j = -2;
 		        	}
 		        }
 		        freqList.add(frequency);
+		        if (j == -2) {
+		        	break;
+		        }
 		        ++i;
 		        }
-			j++;
+			++j;
 		}
-		System.out.println(freqList.size());
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -48,8 +51,8 @@ public class Day_1_ChronalCalibration {
 		ArrayList<Integer> freqMods = new ArrayList<Integer>();
 		sc.useDelimiter("\\Z");
 		populate_list(sc, freqMods);
-		last_freq(sc, freqMods);
-		first_double_freq(sc, freqMods);
+		last_freq(freqMods);
+		first_double_freq(freqMods);
 	}
 	
 }
