@@ -46,7 +46,7 @@ public class Day_1_ChronalCalibration {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\input.txt");
+		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_1.txt");
 		Scanner sc = new Scanner(file);
 		ArrayList<Integer> freqMods = new ArrayList<Integer>();
 		sc.useDelimiter("\\Z");
