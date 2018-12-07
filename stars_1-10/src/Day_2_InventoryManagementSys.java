@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Day_2_InventoryManagementSys {
@@ -41,6 +40,38 @@ public class Day_2_InventoryManagementSys {
 		return counter;
 	}
 	
+	private static String correctIDchars(ArrayList<String> aList) {
+		String matchingChars = "";
+		boolean IDsAreFound = false;
+		for (int i = 0; i<aList.size()-1; ++i) {
+			String examineID = aList.get(i);
+			for (int j = i+1; j<aList.size(); ++j) {
+				String currentID = aList.get(j);
+				int diff = 0;
+				int iChar = 0;
+				while (diff < 2 && iChar < examineID.length()) {
+					if (examineID.charAt(iChar) != currentID.charAt(iChar)) {
+						++diff;
+					}
+					++iChar;
+				}
+				if (diff == 1) {
+					iChar = 0;
+					while (iChar < examineID.length()) {
+						if (examineID.charAt(iChar) != currentID.charAt(iChar)) {
+							matchingChars = examineID.replace(String.valueOf(examineID.charAt(iChar)), "");
+						}
+						++iChar;
+					}
+					IDsAreFound = true;
+					break;
+				}
+			}
+		if (IDsAreFound) {break;}
+		}
+		return matchingChars;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_2.txt");
@@ -48,18 +79,20 @@ public class Day_2_InventoryManagementSys {
 		ArrayList<String> IDlist = new ArrayList<>();
 		sc.useDelimiter("\\Z");
 		populate_list(sc, IDlist);
+		int[] outputArray = charCounter(IDlist);
+		System.out.println("The checksum for my list of box IDs is: " + outputArray[0]*outputArray[1]);
+		ArrayList<String> testList = new ArrayList<String>();
+		testList.add("abcde");
+		testList.add("fghij");
+		testList.add("klmno");
+		testList.add("pqrst");
+		testList.add("fguij");
+		testList.add("axcye");
+		testList.add("wvxyz");
+		String testStr = "fgij";
+		System.out.println("Unit test 2: " + testStr.equals(correctIDchars(testList)));
 		
-		ArrayList<String> testList = new ArrayList<>();
-		testList.add("abcdef");
-		testList.add("bababc");
-		testList.add("abbcde");
-		testList.add("abcccd");
-		testList.add("aabcdd");
-		testList.add("abcdee");
-		testList.add("ababab");
-		int[] outputArray = charCounter(testList);
-		
-		System.out.println(Arrays.toString(outputArray));
+		//System.out.println("The common letters between the two correct box IDs are:" + correctIDchars(IDlist));
 	}
 
 }
