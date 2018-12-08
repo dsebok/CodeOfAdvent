@@ -46,6 +46,11 @@ public class Day_3_OverlappingFabrics {
 		return corners;
 	}
 	
+	private static int[] coordinates(String inputStr) {
+		int[] separators = findSeparators(inputStr);
+		return findCorners(inputStr, separators);
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_3.txt");
@@ -57,12 +62,11 @@ public class Day_3_OverlappingFabrics {
 		ArrayList<String> testList = new ArrayList<String>();
 		testList.add("#1 @ 1,3: 4x4");
 		testList.add("#2 @ 3,1: 4x4");
-		testList.add("#3 @ 50,50: 20x2");
+		testList.add("#3 @ 5,5: 2x2");
 		//int test1 = 4;
 		//System.out.println("Unit test 1: " + (test1 == test1));
-		int[] separators = findSeparators(testList.get(2));
-		int[] coordinates = findCorners(testList.get(2), separators);
-		System.out.println("test: " + Arrays.toString(coordinates));
+		
+		System.out.println("test: " + Arrays.toString(coordinates(testList.get(0))));
 		
 		
 	}
