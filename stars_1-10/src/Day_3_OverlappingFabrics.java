@@ -29,8 +29,21 @@ public class Day_3_OverlappingFabrics {
 				locOfX = i;
 			}
 		}
-		int[] coordinates = {locOfAt, locOfComma, locOfColon, locOfX};
-		return coordinates;
+		int[] separators = {locOfAt, locOfComma, locOfColon, locOfX};
+		return separators;
+	}
+	
+	private static int[] findCorners(String inputStr, int[] separators) {
+		int locOfAt = separators[0];
+		int locOfComma = separators[1];
+		int locOfColon = separators[2];
+		int locOfX = separators[3];
+		int upLeftX = Integer.parseInt(inputStr.substring(locOfAt + 2, locOfComma));
+		int upLeftY = Integer.parseInt(inputStr.substring(locOfComma + 1, locOfColon));
+		int downRightX = Integer.parseInt(inputStr.substring(locOfColon + 2, locOfX)) + upLeftX;
+		int downRightY = Integer.parseInt(inputStr.substring(locOfX + 1, inputStr.length())) + upLeftY;
+		int[] corners = {upLeftX, upLeftY, downRightX, downRightY};
+		return corners;
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -44,11 +57,12 @@ public class Day_3_OverlappingFabrics {
 		ArrayList<String> testList = new ArrayList<String>();
 		testList.add("#1 @ 1,3: 4x4");
 		testList.add("#2 @ 3,1: 4x4");
-		testList.add("#3 @ 5,5: 2x2");
+		testList.add("#3 @ 50,50: 20x2");
 		//int test1 = 4;
 		//System.out.println("Unit test 1: " + (test1 == test1));
-		
-		System.out.println("test: " + Arrays.toString(findSeparators(testList.get(1))));
+		int[] separators = findSeparators(testList.get(2));
+		int[] coordinates = findCorners(testList.get(2), separators);
+		System.out.println("test: " + Arrays.toString(coordinates));
 		
 		
 	}
