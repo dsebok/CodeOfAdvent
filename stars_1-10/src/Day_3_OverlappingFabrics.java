@@ -82,6 +82,18 @@ public class Day_3_OverlappingFabrics {
 		return planDataBase;
 	}
 	
+	private static int commonSquares(int[][] planDataBase) {
+		int commonSquares = 0;
+		for (int[] row: planDataBase ) {
+			for (int square: row) {
+				if (square > 1) {
+					++commonSquares;
+				}
+			}
+		}
+		return commonSquares;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_3.txt");
@@ -99,10 +111,9 @@ public class Day_3_OverlappingFabrics {
 		
 		//System.out.println("test: " + Arrays.toString(coordinates(testList.get(0))));
 		int[][] planDataBase = planDataBase(testList);
+		int commonSquares = commonSquares(planDataBase);
 		
-		for (int[] line: planDataBase) {
-			System.out.println(Arrays.toString(line) + "\n");
-		}
+		System.out.println("The number of the common squares is: " + commonSquares);
 	}
 
 }
