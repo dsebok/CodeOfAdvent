@@ -64,25 +64,45 @@ public class Day_3_OverlappingFabrics {
 		return maxValue;
 	}
 	
+	private static int[][] planDataBase(ArrayList<String> elfPlans) {
+		int maxValue =  maxValue(elfPlans);
+		int[][] planDataBase = new int[maxValue+1][maxValue+1];
+		for (String plan: elfPlans) {
+			int[] coordinates = coordinates(plan);
+			int upLeftX = coordinates[0];
+			int upLeftY = coordinates[1];
+			int downRightX = coordinates[2];
+			int downRightY = coordinates[3];
+			for (int X = upLeftX; X < downRightX; ++X) {
+				for (int Y = upLeftY; Y < downRightY; ++Y) {
+					++planDataBase[X][Y];
+				}
+			}
+		}
+		return planDataBase;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_3.txt");
 		Scanner sc = new Scanner(file);
-		ArrayList<String> IDlist = new ArrayList<>();
+		ArrayList<String> elfPlans = new ArrayList<>();
 		sc.useDelimiter("\\Z");
-		populate_list(sc, IDlist);
+		populate_list(sc, elfPlans);
 		
 		ArrayList<String> testList = new ArrayList<String>();
 		testList.add("#1 @ 1,3: 4x4");
-		testList.add("#2 @ 3,1: 4x14");
+		testList.add("#2 @ 3,1: 4x4");
 		testList.add("#3 @ 5,5: 2x2");
 		//int test1 = 4;
 		//System.out.println("Unit test 1: " + (test1 == test1));
 		
 		//System.out.println("test: " + Arrays.toString(coordinates(testList.get(0))));
-		System.out.println("test: " + maxValue(testList));
+		int[][] planDataBase = planDataBase(testList);
 		
-		
+		for (int[] line: planDataBase) {
+			System.out.println(Arrays.toString(line) + "\n");
+		}
 	}
 
 }
