@@ -106,13 +106,13 @@ public class Day_3_OverlappingFabrics {
 		testList.add("#1 @ 1,3: 4x4");
 		testList.add("#2 @ 3,1: 4x4");
 		testList.add("#3 @ 5,5: 2x2");
-		//int test1 = 4;
-		//System.out.println("Unit test 1: " + (test1 == test1));
+		int unit1 = 4;
+		int[][] testDataBase = planDataBase(testList);
+		int commonSquares = commonSquares(testDataBase);
+		System.out.println("Unit test 1: " + (commonSquares == unit1));
 		
-		//System.out.println("test: " + Arrays.toString(coordinates(testList.get(0))));
-		int[][] planDataBase = planDataBase(testList);
-		int commonSquares = commonSquares(planDataBase);
-		
+		int[][] planDataBase = planDataBase(elfPlans);
+		commonSquares = commonSquares(planDataBase);
 		System.out.println("The number of the common squares is: " + commonSquares);
 	}
 
