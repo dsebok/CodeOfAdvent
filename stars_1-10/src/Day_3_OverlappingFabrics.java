@@ -75,7 +75,7 @@ public class Day_3_OverlappingFabrics {
 			int downRightY = coordinates[3];
 			for (int X = upLeftX; X < downRightX; ++X) {
 				for (int Y = upLeftY; Y < downRightY; ++Y) {
-					++planDataBase[X][Y];
+					planDataBase[X][Y]++;
 				}
 			}
 		}
@@ -94,6 +94,29 @@ public class Day_3_OverlappingFabrics {
 		return commonSquares;
 	}
 	
+	static String IDofIntactSquare(ArrayList<String> elfPlans, int[][] planDataBase) {
+		for (String plan: elfPlans) {
+			int[] coordinates = coordinates(plan);
+			int upLeftX = coordinates[0];
+			int upLeftY = coordinates[1];
+			int downRightX = coordinates[2];
+			int downRightY = coordinates[3];
+			boolean intact = true;
+			for (int X = upLeftX; X < downRightX; ++X) {
+				for (int Y = upLeftY; Y < downRightY; ++Y) {
+					if (planDataBase[X][Y] != 1) {
+						intact = false;
+						break;
+					}
+				}
+			}
+			if (intact) {
+				return plan;
+			}
+		}
+		return "None";
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_3.txt");
@@ -110,10 +133,13 @@ public class Day_3_OverlappingFabrics {
 		int[][] testDataBase = planDataBase(testList);
 		int commonSquares = commonSquares(testDataBase);
 		System.out.println("Unit test 1: " + (commonSquares == unit1));
+		String unit2 = "#3 @ 5,5: 2x2";
+		System.out.println(IDofIntactSquare(testList, testDataBase) == unit2);
 		
 		int[][] planDataBase = planDataBase(elfPlans);
 		commonSquares = commonSquares(planDataBase);
 		System.out.println("The number of the common squares is: " + commonSquares);
+		//System.out.println(IDofIntactSquare(elfPlans, planDataBase));
 	}
 
 }
