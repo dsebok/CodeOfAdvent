@@ -134,12 +134,12 @@ public class Day_3_OverlappingFabrics {
 		int commonSquares = commonSquares(testDataBase);
 		System.out.println("Unit test 1: " + (commonSquares == unit1));
 		String unit2 = "#3 @ 5,5: 2x2";
-		System.out.println(IDofIntactSquare(testList, testDataBase) == unit2);
+		System.out.println("Unit test 2: " + (IDofIntactSquare(testList, testDataBase) == unit2));
 		
 		int[][] planDataBase = planDataBase(elfPlans);
 		commonSquares = commonSquares(planDataBase);
 		System.out.println("The number of the common squares is: " + commonSquares);
-		//System.out.println(IDofIntactSquare(elfPlans, planDataBase));
+		System.out.println("The intact claim is: " + IDofIntactSquare(elfPlans, planDataBase));
 	}
 
 }
