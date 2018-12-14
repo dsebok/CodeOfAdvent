@@ -68,7 +68,13 @@ public class Day_4_ResponseRecord {
 		return interpretTime;
 	}
 	
-	
+	private static int inMinutes(int[] time) {
+		int months = time[0] * 12 + time[1];
+		int days = months * 31 + time[2];
+		int hours = days * 24 + time[3];
+		int minutes = hours * 60 + time[4];
+		return minutes;
+	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
@@ -82,7 +88,8 @@ public class Day_4_ResponseRecord {
 		
 		for (String event: testList) {
 			int[] timeTest = interpretTime(event);
-			System.out.println("Unit test 1:\n" + Arrays.toString(timeTest));
+			int time = inMinutes(timeTest);
+			System.out.println(time);
 		}
 		
 		/*
