@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Day_4_ResponseRecord {
@@ -10,6 +11,64 @@ public class Day_4_ResponseRecord {
 			aList.add(sc.nextLine());
 		}
 	}
+	
+	private static int[] interpretTime(String inputStr) {
+		String delimiter = "firstBracket";
+		int year = 0;
+		int month = 0;
+		int day = 0;
+		int hours = 0;
+		int mins = 0;
+		String timeString = "";
+		for (char Char: inputStr.toCharArray()) {
+			
+			switch (delimiter) {
+				case "firstBracket":
+					delimiter = "hyphen1"; 
+					break;
+				case "hyphen1":
+					if (Char == '-') {
+						delimiter = "hyphen2";
+						year = Integer.parseInt(timeString);
+						timeString = "";
+						break;
+					}
+				case "hyphen2":
+					if (Char == '-') {
+						delimiter = "space";
+						month = Integer.parseInt(timeString);
+						timeString = "";
+						break;
+					}
+				case "space":
+					if (Char == ' ') {
+						delimiter = "colon";
+						day = Integer.parseInt(timeString);
+						timeString = "";
+						break;
+					}
+				case "colon":
+					if (Char == ':') {
+						delimiter = "lastBracket";
+						hours = Integer.parseInt(timeString);
+						timeString = "";
+						break;
+					}
+				case "lastBracket":
+					if (Char == ']') {
+						delimiter = "";
+						mins = Integer.parseInt(timeString);
+						timeString = "";
+						break;
+					}
+				default: timeString += Char;
+			}
+		}
+		int[] interpretTime = {year, month, day, hours, mins};
+		return interpretTime;
+	}
+	
+	
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
@@ -21,7 +80,10 @@ public class Day_4_ResponseRecord {
 		
 		//int unit1 = 240;
 		
-		System.out.println("Unit test 1: ");
+		for (String event: testList) {
+			int[] timeTest = interpretTime(event);
+			System.out.println("Unit test 1:\n" + Arrays.toString(timeTest));
+		}
 		
 		/*
 		file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4.txt");
