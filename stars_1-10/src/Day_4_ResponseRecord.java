@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Day_4_ResponseRecord {
@@ -25,45 +23,45 @@ public class Day_4_ResponseRecord {
 		for (char Char: inputStr.toCharArray()) {
 			
 			switch (delimiter) {
-				case "firstBracket":
-					delimiter = "hyphen1"; 
+			case "firstBracket":
+				delimiter = "hyphen1"; 
+				break;
+			case "hyphen1":
+				if (Char == '-') {
+					delimiter = "hyphen2";
+					year = Integer.parseInt(timeString);
+					timeString = "";
 					break;
-				case "hyphen1":
-					if (Char == '-') {
-						delimiter = "hyphen2";
-						year = Integer.parseInt(timeString);
-						timeString = "";
-						break;
+				}
+			case "hyphen2":
+				if (Char == '-') {
+					delimiter = "space";
+					month = Integer.parseInt(timeString);
+					timeString = "";
+					break;
+				}
+			case "space":
+				if (Char == ' ') {
+					delimiter = "colon";
+					day = Integer.parseInt(timeString);
+					timeString = "";
+					break;
+				}
+			case "colon":
+				if (Char == ':') {
+					delimiter = "lastBracket";
+					hours = Integer.parseInt(timeString);
+					timeString = "";
+					break;
 					}
-				case "hyphen2":
-					if (Char == '-') {
-						delimiter = "space";
-						month = Integer.parseInt(timeString);
-						timeString = "";
-						break;
-					}
-				case "space":
-					if (Char == ' ') {
-						delimiter = "colon";
-						day = Integer.parseInt(timeString);
-						timeString = "";
-						break;
-					}
-				case "colon":
-					if (Char == ':') {
-						delimiter = "lastBracket";
-						hours = Integer.parseInt(timeString);
-						timeString = "";
-						break;
-					}
-				case "lastBracket":
-					if (Char == ']') {
-						delimiter = "";
-						mins = Integer.parseInt(timeString);
-						timeString = "";
-						break;
-					}
-				default: timeString += Char;
+			case "lastBracket":
+				if (Char == ']') {
+					delimiter = "";
+					mins = Integer.parseInt(timeString);
+					timeString = "";
+					break;
+				}
+			default: timeString += Char;
 			}
 		}
 		int[] interpretTime = {year, month, day, hours, mins};
@@ -87,6 +85,38 @@ public class Day_4_ResponseRecord {
 		return eventsWithTime;
 	}
 	
+	private static ArrayList<String> reorderEvents(ArrayList<String> guardEvents) {
+		HashMap<String, Integer> eventsWithTime = assignTime(guardEvents);
+		ArrayList<String> reordered = new ArrayList<>();
+		for (String event: guardEvents) {
+			int currentEventTime = eventsWithTime.get(event);
+			switch (reordered.size()) {
+			case 0:
+				reordered.add(event);
+				break;
+			case 1:
+				if (currentEventTime < eventsWithTime.get(reordered.get(0))) {
+					reordered.add(0, event);
+				} else {
+					reordered.add(event);
+				}
+				break;
+			default:
+				for (int i=0; i<reordered.size(); ++i) {
+					int listEventTime = eventsWithTime.get(reordered.get(i));
+					if (currentEventTime < listEventTime) {
+						reordered.add(i, event);
+						break;
+					} else if (i == reordered.size()-1) {
+						reordered.add(event);
+						break;
+					}
+				}
+			}
+		}
+		return reordered;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4_test.txt");
@@ -96,19 +126,22 @@ public class Day_4_ResponseRecord {
 		populate_list(sc, testList);
 		
 		//int unit1 = 240;
-		HashMap<String, Integer> testListWithTime = assignTime(testList);
-		for (Map.Entry<String, Integer> entry: testListWithTime.entrySet()) {
-			System.out.println(entry.getValue());
-		}
-		
 		/*
+		ArrayList<String> outPutList = reorderEvents(testList);
+		for (String event: outPutList) {
+			System.out.println(event);
+		}
+		*/
+		
 		file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4.txt");
 		sc = new Scanner(file);
 		ArrayList<String> guardEvents = new ArrayList<>();
 		sc.useDelimiter("\\Z");
 		populate_list(sc, guardEvents);
-		System.out.println("");
-		*/
+		ArrayList<String> orderedList = reorderEvents(guardEvents);
+		for (String event: orderedList) {
+			System.out.println(event);
+		}
 	}
 
 }
