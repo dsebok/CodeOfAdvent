@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Day_4_ResponseRecord {
@@ -76,6 +78,15 @@ public class Day_4_ResponseRecord {
 		return minutes;
 	}
 	
+	private static HashMap<String, Integer> assignTime(ArrayList<String> guardEvents) {
+		HashMap<String, Integer> eventsWithTime = new HashMap<String, Integer>();
+		
+		for (String event: guardEvents) {
+			eventsWithTime.put(event, inMinutes(interpretTime(event)));
+		}
+		return eventsWithTime;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4_test.txt");
@@ -85,11 +96,9 @@ public class Day_4_ResponseRecord {
 		populate_list(sc, testList);
 		
 		//int unit1 = 240;
-		
-		for (String event: testList) {
-			int[] timeTest = interpretTime(event);
-			int time = inMinutes(timeTest);
-			System.out.println(time);
+		HashMap<String, Integer> testListWithTime = assignTime(testList);
+		for (Map.Entry<String, Integer> entry: testListWithTime.entrySet()) {
+			System.out.println(entry.getValue());
 		}
 		
 		/*
