@@ -1,7 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Day_4_ResponseRecord {
@@ -117,21 +119,85 @@ public class Day_4_ResponseRecord {
 		return reordered;
 	}
 	
+	private static int getMinute(String event) {
+		int minute = Integer.parseInt(event.substring(15, 17));
+		return minute;
+	}
+	
+	private static HashMap<String, int[]> collectGuardSleepTime(ArrayList<String> reorderedEvents) {
+		HashMap<String, int[]> guardData = new HashMap<String, int[]>();
+		String guardID = "";
+		int sleepMin = 0;
+		int wakeMin = 0;
+		for (String event: reorderedEvents) {
+			char startChar = event.charAt(19);
+			switch (startChar) {
+			case 'G':
+				guardID = event.substring(26, 30);
+				if (!guardData.containsKey(guardID)) {
+					guardData.put(guardID, new int[60]);
+				}
+				break;
+			case 'f':
+				sleepMin = getMinute(event);
+				break;
+			case 'w':
+				wakeMin = getMinute(event);
+				for (int t = sleepMin; t < wakeMin; ++t) {
+					++guardData.get(guardID)[t];
+				}
+			default:
+			}
+		}
+		return guardData;
+	}
+	
+	private static String getSleepyGuard(HashMap<String, int[]> guardData) {
+		String sleepyGuard = "";
+		int mostSleptTime = 0;
+		for (Map.Entry<String, int[]> data: guardData.entrySet()) {
+			int currentSleptTime = 0;
+			for (int t: data.getValue()) {
+				currentSleptTime += t;
+			}
+			if (mostSleptTime < currentSleptTime) {
+				mostSleptTime = currentSleptTime;
+				sleepyGuard = data.getKey();
+			}
+			
+		}
+		return sleepyGuard;
+	}
+	
+	private static int getSleepyMin(HashMap<String, int[]> guardData, String sleepyGuard) {
+		int sleepyMin = 0;
+		int sleepLen = 0;
+		int[] sleepTimes = guardData.get(sleepyGuard);
+		for (int t = 0; t<sleepTimes.length; ++t) {
+			if (sleepLen < sleepTimes[t]) {
+				sleepLen = sleepTimes[t];
+				sleepyMin = t;
+			}
+		}	
+		return sleepyMin;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4_test.txt");
 		Scanner sc = new Scanner(file);
 		ArrayList<String> testList = new ArrayList<String>();
 		sc.useDelimiter("\\Z");
-		populate_list(sc, testList);
-		
-		//int unit1 = 240;
-		/*
+		populate_list(sc, testList);	
 		ArrayList<String> outPutList = reorderEvents(testList);
-		for (String event: outPutList) {
-			System.out.println(event);
-		}
-		*/
+		HashMap<String, int[]> guardData = collectGuardSleepTime(outPutList);
+		String sleepyGuard = getSleepyGuard(guardData);
+		int sleepyMin = getSleepyMin(guardData, sleepyGuard);
+		
+		System.out.println("Sleepy Guard: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
+		
+		
+		
 		
 		file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4.txt");
 		sc = new Scanner(file);
@@ -139,9 +205,10 @@ public class Day_4_ResponseRecord {
 		sc.useDelimiter("\\Z");
 		populate_list(sc, guardEvents);
 		ArrayList<String> orderedList = reorderEvents(guardEvents);
-		for (String event: orderedList) {
-			System.out.println(event);
-		}
+		guardData = collectGuardSleepTime(orderedList);
+		sleepyGuard = getSleepyGuard(guardData);
+		
+		System.out.println(sleepyGuard);
+		
 	}
-
 }
