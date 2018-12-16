@@ -182,6 +182,21 @@ public class Day_4_ResponseRecord {
 		return sleepyMin;
 	}
 	
+	private static String getSleepyGuard2(HashMap<String, int[]> guardData) {
+		String sleepyGuard = "";
+		int mostSleptTime = 0;
+		for (Map.Entry<String, int[]> data: guardData.entrySet()) {
+			int[] sleepTimes = data.getValue();
+			for (int t = 0; t<sleepTimes.length; ++t) {
+				if (mostSleptTime < sleepTimes[t]) {
+					mostSleptTime = sleepTimes[t];
+					sleepyGuard = data.getKey();
+				}
+			}	
+		}
+		return sleepyGuard;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4_test.txt");
@@ -193,11 +208,10 @@ public class Day_4_ResponseRecord {
 		HashMap<String, int[]> guardData = collectGuardSleepTime(outPutList);
 		String sleepyGuard = getSleepyGuard(guardData);
 		int sleepyMin = getSleepyMin(guardData, sleepyGuard);
-		
 		System.out.println("Sleepy Guard: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
-		
-		
-		
+		sleepyGuard = getSleepyGuard2(guardData);
+		sleepyMin = getSleepyMin(guardData, sleepyGuard);
+		System.out.println("Sleepy Guard2: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
 		
 		file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4.txt");
 		sc = new Scanner(file);
@@ -207,8 +221,10 @@ public class Day_4_ResponseRecord {
 		ArrayList<String> orderedList = reorderEvents(guardEvents);
 		guardData = collectGuardSleepTime(orderedList);
 		sleepyGuard = getSleepyGuard(guardData);
-		
-		System.out.println(sleepyGuard);
-		
+		sleepyMin = getSleepyMin(guardData, sleepyGuard);
+		System.out.println("Sleepy Guard: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
+		sleepyGuard = getSleepyGuard2(guardData);
+		sleepyMin = getSleepyMin(guardData, sleepyGuard);
+		System.out.println("Sleepy Guard2: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
 	}
 }
