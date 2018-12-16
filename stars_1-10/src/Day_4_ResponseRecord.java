@@ -197,14 +197,12 @@ public class Day_4_ResponseRecord {
 		return sleepyGuard;
 	}
 	
-	public static void main(String[] args) throws FileNotFoundException {
-		
-		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4_test.txt");
+	private static void printSleepyGuards(File file) throws FileNotFoundException {
 		Scanner sc = new Scanner(file);
-		ArrayList<String> testList = new ArrayList<String>();
+		ArrayList<String> guardEvents = new ArrayList<String>();
 		sc.useDelimiter("\\Z");
-		populate_list(sc, testList);	
-		ArrayList<String> outPutList = reorderEvents(testList);
+		populate_list(sc, guardEvents);	
+		ArrayList<String> outPutList = reorderEvents(guardEvents);
 		HashMap<String, int[]> guardData = collectGuardSleepTime(outPutList);
 		String sleepyGuard = getSleepyGuard(guardData);
 		int sleepyMin = getSleepyMin(guardData, sleepyGuard);
@@ -212,19 +210,14 @@ public class Day_4_ResponseRecord {
 		sleepyGuard = getSleepyGuard2(guardData);
 		sleepyMin = getSleepyMin(guardData, sleepyGuard);
 		System.out.println("Sleepy Guard2: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException {
 		
+		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4_test.txt");
+		printSleepyGuards(file);
 		file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_4.txt");
-		sc = new Scanner(file);
-		ArrayList<String> guardEvents = new ArrayList<>();
-		sc.useDelimiter("\\Z");
-		populate_list(sc, guardEvents);
-		ArrayList<String> orderedList = reorderEvents(guardEvents);
-		guardData = collectGuardSleepTime(orderedList);
-		sleepyGuard = getSleepyGuard(guardData);
-		sleepyMin = getSleepyMin(guardData, sleepyGuard);
-		System.out.println("Sleepy Guard: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
-		sleepyGuard = getSleepyGuard2(guardData);
-		sleepyMin = getSleepyMin(guardData, sleepyGuard);
-		System.out.println("Sleepy Guard2: " + sleepyGuard + ", his most sleepy min: " + sleepyMin);
+		printSleepyGuards(file);
+		
 	}
 }
