@@ -49,6 +49,31 @@ public class Day_6_Chronal_Coordinates {
 		return dataBase;
 	}
 	
+	private static int[] defineCorners(int[][] coordinates) {
+		int upLeftX = coordinates[0][0];
+		int upLeftY = coordinates[0][1];
+		int downRightX = coordinates[0][0];
+		int downRightY = coordinates[0][1];
+		for (int[] point: coordinates) {
+			int X = point[0];
+			int Y = point[1];
+			if (upLeftX > X) {
+				upLeftX = X;
+			}
+			if (upLeftY > Y) {
+				upLeftY = Y;
+			}
+			if (downRightX < X) {
+				downRightX = X;
+			}
+			if (downRightY < Y) {
+				downRightY = Y;
+			}
+		}
+		int[] corners = {upLeftX, upLeftY, downRightX, downRightY};
+		return corners;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_6.txt");
@@ -56,12 +81,8 @@ public class Day_6_Chronal_Coordinates {
 		ArrayList<String> rawCoordinates = new ArrayList<String>();
 		populate_list(sc, rawCoordinates);
 		int[][] coordinates = createCoordinateDataBase(rawCoordinates);
+		int[] corners = defineCorners(coordinates);
 		
-		for (int i = 0; i<coordinates.length; ++i) {
-			int f1 = coordinates[i][0];
-			int f2 = coordinates[i][1];
-			System.out.println(f1 + ", " + f2);
-		}
+		System.out.println(corners[0] + ", " + corners[1] + ", " + corners[2] + ", " + corners[3]);
 	}
-
 }
