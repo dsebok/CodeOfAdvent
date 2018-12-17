@@ -13,14 +13,9 @@ public class Day_5_Alchemical_Reduction {
 		return inputStr;
 	}
 	
-	private static String unitReaction(String polymerBuild) {
-		return " ";
-	}
-	
 	private static Boolean areOpposites(char ch1, char ch2) {
 		Boolean secondIsLower = Character.toLowerCase(ch1) == ch2;
 		Boolean secondIsUpper = Character.toUpperCase(ch1) == ch2;
-		
 		Boolean firstIsLower = Character.toLowerCase(ch2) == ch1;
 		Boolean firstIsUpper = Character.toUpperCase(ch2) == ch1;
 		if (firstIsLower && secondIsUpper) {
@@ -31,19 +26,37 @@ public class Day_5_Alchemical_Reduction {
 		return false;
 	}
 	
+	private static String unitReaction(String polymerBuild) {
+		char firstChar;
+		char secondChar;
+		int i = 0;
+		while (i < polymerBuild.length()-1) {
+			firstChar = polymerBuild.charAt(i);
+			secondChar = polymerBuild.charAt(i + 1);
+			if (areOpposites(firstChar, secondChar)) {
+				polymerBuild = polymerBuild.substring(0, i) + polymerBuild.substring(i+2, polymerBuild.length());
+				if (i == 0) {
+					i = i-1;
+				} else {
+					i = i-2;
+				}
+			}
+			++i;
+		}
+		return polymerBuild;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_5.txt");
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\Z");
 		String polymerBuild = stockUp_String(sc);
-		System.out.println(polymerBuild.length());
-		System.out.println("Unit1: " + areOpposites('c', 'C'));
-		System.out.println("Unit1: " + areOpposites('C', 'c'));
-		System.out.println("Unit1: " + areOpposites('c', 'c'));
-		System.out.println("Unit1: " + areOpposites('C', 'C'));
 		
+		String inputStr = "dabAcCaCBAcCcaDA";
+		String unit1 = "dabCBAcaDA";
+		inputStr = unitReaction(inputStr);
+		System.out.println("Unit test 1: " + inputStr.equals(unit1));
 
 	}
-
 }
