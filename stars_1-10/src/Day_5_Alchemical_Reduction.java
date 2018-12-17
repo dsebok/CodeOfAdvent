@@ -1,5 +1,4 @@
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 
@@ -67,6 +66,19 @@ public class Day_5_Alchemical_Reduction {
 		return polymerBuild;
 	}
 	
+	private static int mostReducedState(String abc, String polymerBuild) {
+		int mostReduced = polymerBuild.length();
+		for (int i=0; i<abc.length(); ++i) {
+			String clearedPolymer = delAllChar(polymerBuild, abc.charAt(i));
+			clearedPolymer = unitReaction(clearedPolymer);
+			int currentLen = clearedPolymer.length();
+			if (mostReduced > currentLen) {
+				mostReduced = currentLen;
+			}
+		}
+		return mostReduced;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_5.txt");
@@ -79,12 +91,10 @@ public class Day_5_Alchemical_Reduction {
 		inputStr = unitReaction(inputStr);
 		System.out.println("Unit test 1: " + inputStr.equals(unit1));
 		
-		polymerBuild = unitReaction(polymerBuild);
-		System.out.println(polymerBuild.length());
+		String reducedPolymer = unitReaction(polymerBuild);
+		System.out.println(reducedPolymer.length());
 		
 		String abc = "abcdefghijklmnopqrstuvwxyz";
-		polymerBuild = delAllChar(polymerBuild, abc.charAt(23));
-		System.out.println(polymerBuild.length());
-
+		System.out.println("The length of the most reduced polymer is: " + mostReducedState(abc, polymerBuild));
 	}
 }
