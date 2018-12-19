@@ -74,6 +74,34 @@ public class Day_6_Chronal_Coordinates {
 		return corners;
 	}
 	
+	private static int distance(int X1, int Y1, int X2, int Y2) {
+		return Math.abs(X1-X2) + Math.abs(Y1 - Y2);
+	}
+	
+	private static int examineLineHor(int X1, int X2, int Y, int[][] coordinates) {
+		int deniedPoints = 0;
+		for (int i = X1; i <= X2; ++i) {
+			for (int[] point: coordinates) {
+				if (point[0] == i && point[1] == Y) {
+					++deniedPoints;
+				}
+			}
+		}
+		return deniedPoints;
+	}
+	
+	private static int examineLineVer(int Y1, int Y2, int X, int[][] coordinates) {
+		int deniedPoints = 0;
+		for (int i = Y1; i <= Y2; ++i) {
+			for (int[] point: coordinates) {
+				if (point[1] == i && point[0] == X) {
+					++deniedPoints;
+				}
+			}
+		}
+		return deniedPoints;
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		File file = new File("D:\\Code_Life\\repos\\CodeOfAdvent\\stars_1-10\\src\\input_6.txt");
@@ -82,7 +110,9 @@ public class Day_6_Chronal_Coordinates {
 		populate_list(sc, rawCoordinates);
 		int[][] coordinates = createCoordinateDataBase(rawCoordinates);
 		int[] corners = defineCorners(coordinates);
+		ArrayList<int[]> deniedPoints = new ArrayList<int[]>();
 		
+	
 		System.out.println(corners[0] + ", " + corners[1] + ", " + corners[2] + ", " + corners[3]);
 	}
 }
