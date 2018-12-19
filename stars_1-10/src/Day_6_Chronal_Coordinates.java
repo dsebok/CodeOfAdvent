@@ -74,32 +74,43 @@ public class Day_6_Chronal_Coordinates {
 		return corners;
 	}
 	
-	private static int distance(int X1, int Y1, int X2, int Y2) {
-		return Math.abs(X1-X2) + Math.abs(Y1 - Y2);
+	private static int manDistance(int[] point1, int[] point2) {
+		return Math.abs(point2[0] - point1[0]) + Math.abs(point2[1] - point1[1]);
 	}
 	
-	private static int examineLineHor(int X1, int X2, int Y, int[][] coordinates) {
+	private static int examineLine(int[] startPoint, int[] endPoint, int[][] coordinates) {
+		int[] diff = {endPoint[0] - startPoint[0], endPoint[1] - startPoint[1]};
+		if (diff[0] != 0 && diff[1] != 0) {
+			System.out.println("examineLine error001: the line is neither horizontal nor vertical!");
+			return 0;
+		}
+		
+		int distance = Math.abs(diff[0] + diff[1]);
+		int[] delta = {diff[0]/distance, diff[1]/distance};
+		
 		int deniedPoints = 0;
-		for (int i = X1; i <= X2; ++i) {
-			for (int[] point: coordinates) {
-				if (point[0] == i && point[1] == Y) {
+		int[] examPoint = {startPoint[0], startPoint[1]};
+		for (int[] currentPoint: coordinates) {
+			if (examPoint[0] == currentPoint[0] && examPoint[1] == currentPoint[1]) {
+				++deniedPoints;
+			}
+		}
+		
+		while (examPoint[0] != endPoint[0] || examPoint[1] != endPoint[1]) {
+			examPoint[0] = examPoint[0] + delta[0];
+			examPoint[1] = examPoint[1] + delta[1];
+			for (int[] currentPoint: coordinates) {
+				if (examPoint[0] == currentPoint[0] && examPoint[1] == currentPoint[1]) {
 					++deniedPoints;
 				}
 			}
 		}
+		
 		return deniedPoints;
 	}
 	
-	private static int examineLineVer(int Y1, int Y2, int X, int[][] coordinates) {
-		int deniedPoints = 0;
-		for (int i = Y1; i <= Y2; ++i) {
-			for (int[] point: coordinates) {
-				if (point[1] == i && point[0] == X) {
-					++deniedPoints;
-				}
-			}
-		}
-		return deniedPoints;
+	private static void excludeSeq() {
+		
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -112,7 +123,10 @@ public class Day_6_Chronal_Coordinates {
 		int[] corners = defineCorners(coordinates);
 		ArrayList<int[]> deniedPoints = new ArrayList<int[]>();
 		
-	
 		System.out.println(corners[0] + ", " + corners[1] + ", " + corners[2] + ", " + corners[3]);
+		int[] point1 = {corners[0], corners[3]};
+		int[] point2 = {corners[2], corners[3]};
+		System.out.println(examineLine(point1, point2, coordinates));
 	}
+		
 }
