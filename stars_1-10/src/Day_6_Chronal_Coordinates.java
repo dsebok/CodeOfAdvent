@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Day_6_Chronal_Coordinates {
@@ -78,39 +79,95 @@ public class Day_6_Chronal_Coordinates {
 		return Math.abs(point2[0] - point1[0]) + Math.abs(point2[1] - point1[1]);
 	}
 	
-	private static int examineLine(int[] startPoint, int[] endPoint, int[][] coordinates) {
+	private static int[] createDelta(int[] startPoint, int[] endPoint) {
 		int[] diff = {endPoint[0] - startPoint[0], endPoint[1] - startPoint[1]};
 		if (diff[0] != 0 && diff[1] != 0) {
-			System.out.println("examineLine error001: the line is neither horizontal nor vertical!");
-			return 0;
+			System.out.println("createDelta warning01: the line is neither horizontal nor vertical!");
+			System.out.println("Startpoint: " + Arrays.toString(startPoint) + ", Endpoint: " + Arrays.toString(endPoint));
 		}
 		
 		int distance = Math.abs(diff[0] + diff[1]);
 		int[] delta = {diff[0]/distance, diff[1]/distance};
+		return delta;
+	}
+	
+	private static ArrayList<int[]> deniedPoints = new ArrayList<int[]>();
+	
+	private static ArrayList<int[]> deniedPointsOnLine(int[] startPoint, int[] endPoint, int[][] coordinates) {
+		int delta[] = createDelta(startPoint, endPoint);
+		ArrayList<int[]> currentDeniedPoints = new ArrayList<int[]>();
 		
-		int deniedPoints = 0;
 		int[] examPoint = {startPoint[0], startPoint[1]};
-		for (int[] currentPoint: coordinates) {
-			if (examPoint[0] == currentPoint[0] && examPoint[1] == currentPoint[1]) {
-				++deniedPoints;
-			}
-		}
+		examPoint[0] += delta[0];
+		examPoint[1] += delta[1];
 		
 		while (examPoint[0] != endPoint[0] || examPoint[1] != endPoint[1]) {
-			examPoint[0] = examPoint[0] + delta[0];
-			examPoint[1] = examPoint[1] + delta[1];
 			for (int[] currentPoint: coordinates) {
 				if (examPoint[0] == currentPoint[0] && examPoint[1] == currentPoint[1]) {
-					++deniedPoints;
+					currentDeniedPoints.add(currentPoint);
+					deniedPoints.add(currentPoint);
+				}
+			}
+			examPoint[0] += delta[0];
+			examPoint[1] += delta[1];
+		}
+		
+		return currentDeniedPoints;
+	}
+	
+	private static void midSequence(int[] startPoint, int[] endPoint, int direction, int[][] coordinates) {
+		if (manDistance(startPoint, endPoint) > 1) {
+			ArrayList<int[]> deniedPoints = deniedPointsOnLine(startPoint, endPoint, coordinates);
+			
+			if (deniedPoints.size()==0) {
+				direction = direction / Math.abs(direction);
+				int[] delta = createDelta(startPoint, endPoint);
+				if (delta[1] == 0) {
+					startPoint[0] += delta[0];
+					startPoint[1] += direction;
+					endPoint[0] -= delta[0];
+					endPoint[1] += direction;
+				} else {
+					startPoint[0] += direction;
+					startPoint[1] += delta[1];
+					endPoint[0] += direction;
+					endPoint[1] -= delta[1];
+				}	
+				midSequence(startPoint, endPoint, direction, coordinates);
+				
+			} else {
+				ArrayList<int[]> separationPoints = new ArrayList<int[]>(deniedPoints);
+				separationPoints.add(0, startPoint);
+				separationPoints.add(endPoint);
+				int i = 1;
+				while (i < separationPoints.size()) {
+					int[] currentStart = separationPoints.get(i-1);
+					int[] currentEnd = separationPoints.get(i);
+					
+					System.out.println("seq");
+					System.out.println(Arrays.toString(startPoint));
+					System.out.println(Arrays.toString(endPoint));
+					System.out.println(Arrays.toString(currentStart));
+					System.out.println(Arrays.toString(currentEnd));
+					System.out.println(Arrays.toString(separationPoints.get(0)));
+					System.out.println(Arrays.toString(separationPoints.get(1)));
+					System.out.println(Arrays.toString(separationPoints.get(2)));
+					
+					midSequence(currentStart, currentEnd, direction, coordinates);
+					
+					System.out.println("lastone");
+					System.out.println(Arrays.toString(startPoint));
+					System.out.println(Arrays.toString(endPoint));
+					System.out.println(Arrays.toString(currentStart));
+					System.out.println(Arrays.toString(currentEnd));
+					System.out.println(Arrays.toString(separationPoints.get(0)));
+					System.out.println(Arrays.toString(separationPoints.get(1)));
+					System.out.println(Arrays.toString(separationPoints.get(2)));
+					
+					++i;
 				}
 			}
 		}
-		
-		return deniedPoints;
-	}
-	
-	private static void excludeSeq() {
-		
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -119,14 +176,43 @@ public class Day_6_Chronal_Coordinates {
 		Scanner sc = new Scanner(file);
 		ArrayList<String> rawCoordinates = new ArrayList<String>();
 		populate_list(sc, rawCoordinates);
+		
+		rawCoordinates.add("303, 95");
+		
 		int[][] coordinates = createCoordinateDataBase(rawCoordinates);
 		int[] corners = defineCorners(coordinates);
-		ArrayList<int[]> deniedPoints = new ArrayList<int[]>();
+		
 		
 		System.out.println(corners[0] + ", " + corners[1] + ", " + corners[2] + ", " + corners[3]);
-		int[] point1 = {corners[0], corners[3]};
-		int[] point2 = {corners[2], corners[3]};
-		System.out.println(examineLine(point1, point2, coordinates));
+		
+		int z = 4;
+		int[] t = {z,z};
+		int[] h = {t[0], t[1]};
+		t[0] = 2*z;
+		t[1] = 2*z;
+		System.out.println(Arrays.toString(h));
+		
+		/*
+		int[] point1 = {corners[0], corners[1]};
+		int[] point2 = {corners[0], corners[3]};
+		excludeSeq(point1, point2, 1, coordinates);
+		*/
+		int[] point3 = {corners[2], corners[1]};
+		int[] point4 = {corners[2], corners[3]};
+		midSequence(point3, point4, -1, coordinates);
+		
+		for (int[] point: deniedPoints) {
+			System.out.println(Arrays.toString(point));
+		}
+		System.out.println(deniedPoints.size());
+		/*
+		point1[0] = corners[0];
+		point2[1] = corners[1];
+		excludeSeq(point1, point2, 1, coordinates);
+		point1[1] = corners[3];
+		point2[1] = corners[3];
+		excludeSeq(point1, point2, -1, coordinates);
+		*/
 	}
 		
 }
